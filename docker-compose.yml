@@ -1,49 +1,25 @@
 version: '3.7'
 
 services:
-  # products:
-  # container_name: products
-  # hostname: products
-  #   build:
-  #     context: ./services/products
-  #     # target: production
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   ports:
-  #     - 5000:5000
-  #   command: npm run start:prod
-  #   env_file:
-  #     - .production.env
-  #   networks:
-  #     - webnet
-  #   depends_on:
-  #     - redis
-  #     - mongo
   # redis:
   #   container_name: redis
   #   image: redis:5
   #   networks:
   #     - webnet
-  # mongo:
-  #   container_name: mongo
-  #   image: mongo:latest
-  #   ports:
-  #     - 27017:27017
-  #   networks:
-  #     - webnet
 
   # WEB
-  # web:
-  #   build: ./services/web
-  #   ports:
-  #     - "80:80"
-  #   networks:
-  #     - webnet
+  web:
+    build: ./services/web
+    ports:
+      - "80:80"
+    networks:
+      - webnet
+    restart: always
 
   # DB
   mongo:
     container_name: mongo
+    hostname: mongo
     command: --quiet
     image: mongo:latest
     ports:
@@ -74,8 +50,8 @@ services:
       - '5000:5000'
     networks:
       - webnet
-    # depends_on:
-    #   - mongo
+    depends_on:
+      - mongo
     restart: always
 
 networks:
