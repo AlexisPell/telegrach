@@ -1,0 +1,17 @@
+{
+	"name": "telegrach",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"install:all": "cd services/chats-api && yarn cd ../server && yarn",
+		"dev:all": "concurrently \"cd services/server && yarn dev\" \"cd services/chats-api && yarn dev\" ",
+		"build:all": "echo"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"concurrently": "^6.3.0"
+	}
+}
