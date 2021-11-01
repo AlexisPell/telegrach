@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import Link from 'next/link';
 import axios from 'axios';
 import { useEffect } from 'react';
 
@@ -25,6 +26,7 @@ const Home: NextPage = () => {
 
 			<main className=''>
 				<h1>Hello boys!</h1>
+				<Link href='/penises'>To penises!</Link>
 			</main>
 		</div>
 	);

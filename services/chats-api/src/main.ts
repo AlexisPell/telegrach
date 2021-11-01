@@ -16,7 +16,7 @@ dotenv.config({
 
 const main = async () => {
 	const app = express();
-	await connect('mongodb://localhost:27017')
+	await connect('mongodb://localhost:27017/telegrach-chats-api')
 		.then((conn) => console.log(`MONGODB CONNECTED`))
 		.catch((conn) => console.log(`MONGODB FAILED`));
 

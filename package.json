@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"install:all": "cd services/chats-api && yarn cd ../server && yarn",
-		"dev:all": "concurrently \"cd services/server && yarn dev\" \"cd services/web && yarn dev\" \"cd services/chats-api && yarn dev\" ",
+		"dev:all": "concurrently \"cd services/proxy-server && yarn dev\" \"cd services/web && yarn dev\" \"cd services/chats-api && yarn dev\" ",
 		"build:all": "echo"
 	},
 	"keywords": [],

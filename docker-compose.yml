@@ -1,0 +1,82 @@
+version: '3.7'
+
+services:
+  # products:
+  # container_name: products
+  # hostname: products
+  #   build:
+  #     context: ./services/products
+  #     # target: production
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   ports:
+  #     - 5000:5000
+  #   command: npm run start:prod
+  #   env_file:
+  #     - .production.env
+  #   networks:
+  #     - webnet
+  #   depends_on:
+  #     - redis
+  #     - mongo
+  # redis:
+  #   container_name: redis
+  #   image: redis:5
+  #   networks:
+  #     - webnet
+  # mongo:
+  #   container_name: mongo
+  #   image: mongo:latest
+  #   ports:
+  #     - 27017:27017
+  #   networks:
+  #     - webnet
+
+  # WEB
+  # web:
+  #   build: ./services/web
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - webnet
+
+  # DB
+  mongo:
+    container_name: mongo
+    command: --quiet
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - webnet
+    restart: always
+
+  # PROXY
+  proxy-server:
+    container_name: proxy-server
+    hostname: proxy-server
+    build: ./services/proxy-server
+    ports:
+      - '8080:8080'
+    networks:
+      - webnet
+    depends_on:
+      - chats-api
+    restart: always
+
+  # CHATS API
+  chats-api:
+    container_name: chats-api # replaces localhost with this name
+    hostname: chats-api
+    build: ./services/chats-api
+    ports:
+      - '5000:5000'
+    networks:
+      - webnet
+    # depends_on:
+    #   - mongo
+    restart: always
+
+networks:
+  webnet:
