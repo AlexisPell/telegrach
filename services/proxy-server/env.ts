@@ -9,7 +9,6 @@ dotenv.config({
 });
 
 export const ENV = {
-	proxyApiPort: process.env.PROXY_API_PORT,
+	webUrl: process.env.WEB_API_URL,
 	chatsApiUrl: process.env.CHATS_API_URL,
-	chatsApiPort: process.env.CHATS_API_PORT,
 };
