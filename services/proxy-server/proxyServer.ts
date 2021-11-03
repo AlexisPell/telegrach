@@ -1,4 +1,3 @@
-import http from 'http';
 import cors from 'cors';
 import express from 'express';
 import httpProxy from 'http-proxy';
@@ -18,7 +17,6 @@ const api = async () => {
 
 	// Proxy pass
 	app.use('*', async (req, res) => {
-		console.log('HEY HYI PROC ENV API', ENV.chatsApiUrl);
 		if (req.originalUrl.startsWith('/api/v1/chats')) {
 			proxyPass.web(req, res, {
 				target: `${ENV.chatsApiUrl}/${req.originalUrl}`,

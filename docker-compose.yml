@@ -7,18 +7,6 @@ services:
   #   image: redis:5
   #   networks:
   #     - webnet
-  # # PROXY
-  # proxy-server:
-  #   container_name: proxy-server
-  #   hostname: proxy-server
-  #   build: ./services/proxy-server
-  #   ports:
-  #     - '8080:8080'
-  #   networks:
-  #     - webnet
-  #   depends_on:
-  #     - chats-api
-  #   restart: always
 
   # NGINX FOR WEB
   nginx:
@@ -35,9 +23,14 @@ services:
     build: ./services/web
     ports:
       - '3000:3000'
+      - '49153:49153'
     networks:
       - webnet
     restart: always
+    volumes:
+      - ./services/web:/app
+      - /app/node_modules
+      - /app/.next
 
   # MONGO
   mongo:
@@ -53,8 +46,8 @@ services:
 
   # PROXY
   proxy-server:
-    # env_file:
-    #   - ./services/proxy-server/.env.production
+    env_file:
+      - .env.development
     container_name: proxy-server
     hostname: proxy-server
     build: ./services/proxy-server
@@ -65,9 +58,13 @@ services:
     depends_on:
       - chats-api
     restart: always
+    volumes:
+      - ./services/proxy-server:/app
 
   # CHATS API
   chats-api:
+    env_file:
+      - .env.development
     container_name: chats-api # replaces localhost with this name
     hostname: chats-api
     build: ./services/chats-api
@@ -78,28 +75,8 @@ services:
     depends_on:
       - mongo
     restart: always
-
-#   # REVERSE PROXY
-#   traefik:
-#     image: traefik:v2.5
-#     container_name: traefik
-#     # Enables the web UI and tells Traefik to listen to docker
-#     command: --api.insecure=true --providers.docker
-#     ports:
-#       - '80:80'
-#       - '443:443'
-#       # The Web UI (enabled by --api.insecure=true)
-#       - '8080:8080'
-#     volumes:
-#       # Forward root for traefik.yml
-#       - /etc/traefik:/etc/traefik
-#       # Pass traefik-ssl-certs to ssl-certs folder in container
-#       - traefik-ssl-certs:/ssl-certs
-#       # So that Traefik can listen to the Docker events
-#       - /var/run/docker.sock:/var/run/docker.sock:ro
-# volumes:
-#   traefik-ssl-certs:
-#     driver: local
+    volumes:
+      - ./services/chats-api:/app
 
 networks:
   webnet:

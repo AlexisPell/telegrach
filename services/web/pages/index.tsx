@@ -31,7 +31,7 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className=''>
-				<h1>Hello boys!</h1>
+				<h1>Hello boys!!</h1>
 				{!session && (
 					<button
 						className='flex text-center text-xl text-green-600 p-4 m-4 bg-red-200 rounded-lg'

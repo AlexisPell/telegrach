@@ -9,6 +9,5 @@ dotenv.config({
 });
 
 export const ENV = {
-	webUrl: process.env.WEB_API_URL, // FROM ROOT
-	chatsApiUrl: process.env.CHATS_API_URL, // FROM ROOT
+	mongoUrl: process.env.MONGO_CHATS as string, // FROM ROOT
 };

@@ -1,22 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-// import { Product, ProductDocument } from './entities/product';
+import { Product, ProductDocument } from './entities/product';
 import { connect } from 'mongoose';
-import dotenv from 'dotenv';
-import path from 'path';
 import { reqLogger } from './reqLogger';
-
-dotenv.config({
-	path: path.resolve(
-		__dirname,
-		'..',
-		`${process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development'}`
-	),
-});
+import { ENV } from '../env';
 
 const main = async () => {
 	const app = express();
-	await connect('mongodb://localhost:27017/telegrach-chats-api')
+	await connect(ENV.mongoUrl)
 		.then((conn) => console.log(`MONGODB CONNECTED`))
 		.catch((conn) => console.log(`MONGODB FAILED`));
 
@@ -40,7 +31,7 @@ const main = async () => {
 		res.json({ path: 'CHATS APP /api/v1/chats/:userId endpoint' });
 	});
 
-	const port = process.env.PORT || 8001;
+	const port = process.env.PORT || 5000;
 	app.listen(port, () => console.log(`SERVER: CHATS - IS RUNNING ON PORT: ${port}`));
 };
 main();
