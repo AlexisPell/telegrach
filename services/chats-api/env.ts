@@ -9,5 +9,5 @@ dotenv.config({
 });
 
 export const ENV = {
-	mongoUrl: process.env.MONGO_CHATS as string, // FROM ROOT
+	mongoUrl: process.env.MONGO_DB as string, // FROM ROOT
 };

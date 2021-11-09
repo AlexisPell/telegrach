@@ -1,23 +1,8 @@
 import NextAuth, { Account, Profile, Session, User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import { JWT } from 'next-auth/jwt';
 import { CredentialInput } from 'next-auth/providers';
-import { URL } from 'url';
-// import FacebookProvider from 'next-auth/providers/facebook';
-// import GitHubProvider from 'next-auth/providers/github';
-
-// import { ObjectId, MongoClient } from 'mongodb';
-// const mongoClient = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017');
-// mongoClient.connect(function (err, client) {
-// 	if (err) throw new Error('NEXTJS: MONGODB FAILED TO CONNECT: ');
-// 	if (!client) throw new Error('NEXTJS: MONGODB CLIENT NOT FOUND: ');
-// 	if (client) {
-// 		const db = client.db('test');
-// 		console.log('MONGO DB SUCCESSFULLY CONNECTED ...');
-// 	}
-// });
 
 // console.log(
 // 	'SERVER ENVIRONMENTS: ',

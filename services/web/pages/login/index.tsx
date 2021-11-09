@@ -53,7 +53,6 @@ const LoginPage: NextPage<LoginPageProps> = ({ session, providers }) => {
 
 	const signInHandler = (provider: ClientSafeProvider) => {
 		signIn(provider.id, {
-			// callbackUrl: `${process.env.NGINX_URL}`,
 			...(provider.id === 'credentials' && credentials),
 		});
 	};

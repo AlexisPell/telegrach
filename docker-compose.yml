@@ -8,15 +8,16 @@ services:
   #   networks:
   #     - webnet
 
-  # NGINX FOR WEB
-  nginx:
-    build: ./nginx
-    container_name: nginx
-    hostname: nginx
-    ports:
-      - 80:80
-    networks:
-      - webnet
+  # # NGINX FOR WEB
+  # nginx:
+  #   build: ./services/web/nginx
+  #   container_name: nginx
+  #   hostname: nginx
+  #   ports:
+  #     - 80:80
+  #   networks:
+  #     - webnet
+
   # WEB
   web:
     container_name: web
@@ -65,7 +66,7 @@ services:
   chats-api:
     env_file:
       - .env.development
-    container_name: chats-api # replaces localhost with this name
+    container_name: chats-api
     hostname: chats-api
     build: ./services/chats-api
     ports:
