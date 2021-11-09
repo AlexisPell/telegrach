@@ -7,6 +7,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Home: NextPage = () => {
 	const { data: session, status } = useSession();
+	console.log('🚀 ~ file: index.tsx ~ line 42 ~ session, status', session, status);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -35,7 +36,7 @@ const Home: NextPage = () => {
 				{!session && (
 					<button
 						className='flex text-center text-xl text-green-600 p-4 m-4 bg-red-200 rounded-lg'
-						onClick={() => signIn('google')}
+						onClick={() => signIn()}
 					>
 						Log In
 					</button>
@@ -46,7 +47,10 @@ const Home: NextPage = () => {
 						<button onClick={() => signOut()}>Sign out</button>
 					</div>
 				)}
-				<Link href='/penises'>To penises!</Link>
+				{!session && <div className='text-center text-xl w-full text-green-600'>UNAUTHORIZED</div>}
+				<div className='h-20 w-full bg-blue-400'>
+					<Link href='/penises'>To penises!</Link>
+				</div>
 			</main>
 		</div>
 	);
