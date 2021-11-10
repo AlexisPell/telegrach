@@ -17,13 +17,26 @@ const api = async () => {
 
 	// Proxy pass
 	app.use('*', async (req, res) => {
-		if (req.originalUrl.startsWith('/api/v1/chats')) {
+		const chatsPath = '/api/v1/chats';
+		const isChatsRequest = req.originalUrl.startsWith(chatsPath);
+
+		const authPath = '/api/v1/auth';
+		const usersPath = '/api/v1/users';
+		const profilesPath = '/api/v1/profiles';
+		const isUsersProfilesRequest = req.originalUrl.startsWith(
+			authPath || usersPath || profilesPath
+		);
+
+		if (isChatsRequest) {
 			proxyPass.web(req, res, {
 				target: `${ENV.chatsApiUrl}/${req.originalUrl}`,
 			});
+		} else if (isUsersProfilesRequest) {
+			proxyPass.web(req, res, {
+				target: `${ENV.usersProfilesUrl}/${req.originalUrl}`,
+			});
 		} else {
-			// 404
-			res.json({ status: 404, msg: 'No such service found...' });
+			res.status(404).json({ status: 404, msg: 'No such service found...' });
 		}
 	});
 

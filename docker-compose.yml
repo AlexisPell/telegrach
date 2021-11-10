@@ -1,13 +1,24 @@
 version: '3.7'
 
 services:
-  # # REDIS
-  # redis:
-  #   container_name: redis
-  #   image: redis:5
-  #   networks:
-  #     - webnet
-
+  # REDIS
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:5
+    networks:
+      - webnet
+  # MONGO
+  mongo:
+    container_name: mongo
+    hostname: mongo
+    command: --quiet
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - webnet
+    restart: always
   # NGINX FOR WEB
   nginx:
     build: ./services/web/nginx
@@ -32,18 +43,6 @@ services:
       - /app/node_modules
       - /app/.next
 
-  # MONGO
-  mongo:
-    container_name: mongo
-    hostname: mongo
-    command: --quiet
-    image: mongo:latest
-    ports:
-      - 27017:27017
-    networks:
-      - webnet
-    restart: always
-
   # PROXY
   proxy-server:
     env_file:
@@ -60,6 +59,26 @@ services:
     restart: always
     volumes:
       - ./services/proxy-server:/app
+      - /app/node_modules
+
+  # USERS-PROFILES-API
+  users-profiles-api:
+    container_name: users-profiles-api
+    hostname: users-profiles-api
+    build: ./services/users-profiles-api
+    volumes:
+      - ./services/users-profiles-api:/app
+      - /app/node_modules
+    ports:
+      - 5000:5000
+    restart: always
+    env_file:
+      - .env.development
+    networks:
+      - webnet
+    depends_on:
+      - redis
+      - mongo
 
   # CHATS API
   chats-api:
@@ -69,7 +88,7 @@ services:
     hostname: chats-api
     build: ./services/chats-api
     ports:
-      - '5000:5000'
+      - '5001:5001'
     networks:
       - webnet
     depends_on:
@@ -77,6 +96,7 @@ services:
     restart: always
     volumes:
       - ./services/chats-api:/app
+      - /app/node_modules
 
 networks:
   webnet:

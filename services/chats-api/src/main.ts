@@ -31,7 +31,7 @@ const main = async () => {
 		res.json({ path: 'CHATS APP /api/v1/chats/:userId endpoint' });
 	});
 
-	const port = process.env.PORT || 5000;
+	const port = process.env.CHATS_PORT || 5001;
 	app.listen(port, () => console.log(`SERVER: CHATS - IS RUNNING ON PORT: ${port}`));
 };
 main();
