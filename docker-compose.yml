@@ -8,16 +8,15 @@ services:
   #   networks:
   #     - webnet
 
-  # # NGINX FOR WEB
-  # nginx:
-  #   build: ./services/web/nginx
-  #   container_name: nginx
-  #   hostname: nginx
-  #   ports:
-  #     - 80:80
-  #   networks:
-  #     - webnet
-
+  # NGINX FOR WEB
+  nginx:
+    build: ./services/web/nginx
+    container_name: nginx
+    hostname: nginx
+    ports:
+      - 80:80
+    networks:
+      - webnet
   # WEB
   web:
     container_name: web
