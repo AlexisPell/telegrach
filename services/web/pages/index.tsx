@@ -3,11 +3,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { urls } from '../src/constants/url';
 
 const Home: NextPage = () => {
-	const { data: session, status } = useSession();
-	console.log('🚀 ~ file: index.tsx ~ line 42 ~ session, status', session, status);
+	// const { data: session, status } = useSession();
+	console.log('🚀 ~ file: index.tsx ~ line 42 ~ env', urls.proxyServer);
 
 	useEffect(() => {
 		const fetch = async () => {
@@ -21,8 +21,8 @@ const Home: NextPage = () => {
 		fetch();
 	}, []);
 
-	if (status === 'loading')
-		return <div className='text-xl text-center text-pink-600'>Loading...</div>;
+	// if (status === 'loading')
+	// 	return <div className='text-xl text-center text-pink-600'>Loading...</div>;
 
 	return (
 		<div className='bg-red-400 w-screen h-screen'>
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
 
 			<main className=''>
 				<h1>Hello boys!!</h1>
-				{!session && (
+				{/* {!session && (
 					<button
 						className='flex text-center text-xl text-green-600 p-4 m-4 bg-red-200 rounded-lg'
 						onClick={() => signIn()}
@@ -47,7 +47,7 @@ const Home: NextPage = () => {
 						<button onClick={() => signOut()}>Sign out</button>
 					</div>
 				)}
-				{!session && <div className='text-center text-xl w-full text-green-600'>UNAUTHORIZED</div>}
+				{!session && <div className='text-center text-xl w-full text-green-600'>UNAUTHORIZED</div>} */}
 				<div className='h-20 w-full bg-blue-400'>
 					<Link href='/penises'>To penises!</Link>
 				</div>

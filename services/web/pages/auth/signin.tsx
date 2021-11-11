@@ -1,16 +1,11 @@
-import { NextPage, GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const res = await fetch('https://penis');
-	const penis: string = await res.json();
-
 	return {
-		props: {
-			penis,
-		},
+		props: {},
 	};
 };
 
