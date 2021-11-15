@@ -4,32 +4,18 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
 import { FiLogIn } from 'react-icons/fi';
+import { FaDiscord } from 'react-icons/fa';
 import { Button, Chip, TextField } from '@mui/material';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-	console.log(
-		'🚀 ~ file: index.tsx ~ line 9 ~ constgetServerSideProps:GetServerSideProps= ~ ctx',
-		ctx.query,
-		process.env.PROXY_API
-	);
 	return {
-		props: {
-			env: process.env.PROXY_API,
-		},
+		props: {},
 	};
 };
 
-interface LoginPageProps {
-	env: any;
-}
-const LoginPage: NextPage<LoginPageProps> = ({ env }) => {
-	console.log('🚀 ~ file: index.tsx ~ line 24 ~ env', env);
+interface LoginPageProps {}
+const LoginPage: NextPage<LoginPageProps> = ({}) => {
 	const router = useRouter();
-	// const { data: sessionInfo, status } = useSession();
-	useEffect(() => {
-		// console.log('🚀 ~ file: index.tsx ~ line 25 ~ session, providers', session, providers);
-		// console.log('🚀 ~ file: index.tsx ~ line 42 ~ session, status', sessionInfo, status);
-	}, []);
 
 	const [credentials, setCredentials] = useState({
 		email: '',
@@ -42,7 +28,6 @@ const LoginPage: NextPage<LoginPageProps> = ({ env }) => {
 
 	const signInHandler = () => {};
 
-	// if (session) router.push('/');
 	return (
 		<>
 			<Head>
@@ -53,28 +38,38 @@ const LoginPage: NextPage<LoginPageProps> = ({ env }) => {
 					<div className='text-center text-blue-500 text-2xl mb-6 font-bold'>
 						Welcome to Telegrach
 					</div>
-					<TextField
-						className='mb-4'
-						value={credentials.email}
-						onChange={onChangeHandler}
-						label='Email'
-						name='email'
-						variant='outlined'
-					/>
-					<TextField
-						className='mb-4'
-						value={credentials.password}
-						onChange={onChangeHandler}
-						label='Password'
-						name='password'
-						variant='outlined'
-					/>
-					<Button className='flex justify-center w-full mb-4' variant='text'>
-						<FiLogIn style={{ fontSize: '28px', marginRight: '10px' }} /> <span>Sign in</span>
-					</Button>
+					<div className='mb-4'>
+						<TextField
+							className='w-full'
+							value={credentials.email}
+							onChange={onChangeHandler}
+							label='Email'
+							name='email'
+							variant='outlined'
+						/>
+					</div>
+					<div className='mb-4'>
+						<TextField
+							className='w-full'
+							value={credentials.password}
+							onChange={onChangeHandler}
+							label='Password'
+							name='password'
+							variant='outlined'
+						/>
+					</div>
+					<div className='mb-4'>
+						<Button className='flex justify-center w-full' variant='text'>
+							<FiLogIn style={{ fontSize: '28px', marginRight: '10px' }} /> <span>Sign in</span>
+						</Button>
+					</div>
 					<Chip label='OR' className='mb-4' />
-					<Button className='flex justify-start w-full mb-4' variant='outlined'>
+					<Button className='flex justify-start w-full' variant='outlined'>
 						<FcGoogle className='text-3xl mr-5' /> <span>Sign in with Google</span>
+					</Button>
+					<div className='mb-4' />
+					<Button className='flex justify-start w-full' variant='outlined'>
+						<FaDiscord className='text-3xl mr-5' /> <span>Sign in with Discord</span>
 					</Button>
 				</div>
 			</section>

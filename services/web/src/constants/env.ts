@@ -1,3 +1,3 @@
 export const environment = {
-	serverUrl: process.env.SERVER_URL,
+	api: process.env.API,
 };

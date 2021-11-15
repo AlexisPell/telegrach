@@ -49,7 +49,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  const PORT = (process.env.USERS_PROFILES_PORT as string) || 5000;
+  const PORT = (process.env.USERS_PORT as string) || 5000;
   await app.listen(PORT, () =>
     console.log(`SERVER IS RUNNING ON PORT ${process.env.PORT}`),
   );

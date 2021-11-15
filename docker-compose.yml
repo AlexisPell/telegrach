@@ -14,20 +14,21 @@ services:
     hostname: mongo
     command: --quiet
     image: mongo:latest
+    restart: always
     ports:
       - 27017:27017
     networks:
       - webnet
-    restart: always
-  # NGINX FOR WEB
-  nginx:
-    build: ./services/web/nginx
-    container_name: nginx
-    hostname: nginx
-    ports:
-      - 80:80
-    networks:
-      - webnet
+
+  # # NGINX FOR WEB
+  # webServer:
+    # build: ./services/web/nginx
+    # container_name: webServer
+    # hostname: webServer
+    # ports:
+    #   - 80:80
+    # networks:
+    #   - webnet
   # WEB
   web:
     container_name: web
@@ -43,31 +44,24 @@ services:
       - /app/node_modules
       - /app/.next
 
-  # PROXY
-  proxy-server:
-    env_file:
-      - .env.development
-    container_name: proxy-server
-    hostname: proxy-server
-    build: ./services/proxy-server
+  # PROXY SERVER
+  proxy:
+    build: ./nginx
+    container_name: proxy
+    hostname: proxy
     ports:
-      - '8080:8080'
+      - 80:80
+      - 8080:8080
     networks:
       - webnet
-    depends_on:
-      - chats-api
-    restart: always
-    volumes:
-      - ./services/proxy-server:/app
-      - /app/node_modules
 
-  # USERS-PROFILES-API
-  users-profiles-api:
-    container_name: users-profiles-api
-    hostname: users-profiles-api
-    build: ./services/users-profiles-api
+  # USERS-API
+  users-api:
+    container_name: users-api
+    hostname: users-api
+    build: ./services/users-api
     volumes:
-      - ./services/users-profiles-api:/app
+      - ./services/users-api:/app
       - /app/node_modules
     ports:
       - 5000:5000
@@ -100,3 +94,24 @@ services:
 
 networks:
   webnet:
+
+
+
+  # # PROXY
+  # proxy-server:
+  #   env_file:
+  #     - .env.development
+  #   container_name: proxy-server
+  #   hostname: proxy-server
+  #   build: ./services/proxy-server
+  #   ports:
+  #     - '8080:8080'
+  #   networks:
+  #     - webnet
+  #   depends_on:
+  #     - chats-api
+  #     - users-api
+  #   restart: always
+  #   volumes:
+  #     - ./services/proxy-server:/app
+  #     - /app/node_modules
