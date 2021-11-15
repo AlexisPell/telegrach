@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '../src/hooks/useRedux';
 import router from 'next/router';
+import { authAsyncActions } from '../src/store/auth/authActionCreators';
 
 const Home: NextPage = () => {
 	// const { data: session, status } = useSession();
@@ -11,10 +12,10 @@ const Home: NextPage = () => {
 	const authState = useAppSelector((state) => state.authReducer);
 
 	useEffect(() => {
-		if (!authState.isAuthorized) {
-			router.push('/login');
-		}
-		// dispatch(authActions.getMe());
+		// if (!authState.isAuthorized) {
+		// 	router.push('/login');
+		// }
+		dispatch(authAsyncActions.getMe());
 	}, []);
 
 	// if (status === 'loading')

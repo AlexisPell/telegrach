@@ -24,14 +24,15 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
+  SwaggerModule.setup(`${apiPrefix}/users/docs`, app, document);
 
   const redisClient = redis.createClient({ url: process.env.REDIS_URI });
   const RedisStore = connectRedis(session);
 
   app.use(cookieParser());
   app.enableCors({
-    origin: '*',
+    origin: ['http://localhost', 'http://localhost:3000'],
+    credentials: true,
   });
 
   app.use(
@@ -51,7 +52,7 @@ async function bootstrap() {
 
   const PORT = (process.env.USERS_PORT as string) || 5000;
   await app.listen(PORT, () =>
-    console.log(`SERVER IS RUNNING ON PORT ${process.env.PORT}`),
+    console.log(`SERVER IS RUNNING ON PORT ${process.env.USERS_PORT}`),
   );
 }
 bootstrap();

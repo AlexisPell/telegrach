@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { NextPage, GetServerSideProps } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FcGoogle } from 'react-icons/fc';
 import { FiLogIn } from 'react-icons/fi';
-import { FaDiscord } from 'react-icons/fa';
-import { Button, Chip, TextField } from '@mui/material';
+import { AiFillCloseCircle } from 'react-icons/ai';
+import { Button, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../src/hooks/useRedux';
 import { authAsyncActions } from '../../src/store/auth/authActionCreators';
 import { isValidEmail } from '../../src/utils/isValidEmail';
-import { AiFillCloseCircle } from 'react-icons/ai';
-import { authApi } from '../../src/api/auth';
-import { environment } from '../../src/constants/env';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	return {
@@ -21,6 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 interface Credentials {
 	email: string;
 	password: string;
+	confirmPassword: string;
 }
 
 interface LoginPageProps {}
@@ -29,24 +26,34 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 	const dispatch = useAppDispatch();
 	const isAuthorized = useAppSelector((state) => state.authReducer.isAuthorized);
 
-	// useEffect(() => {
-	// 	if (isAuthorized) {
-	// 		router.push('/');
-	// 	}
-	// }, [isAuthorized]);
+	useEffect(() => {
+		if (isAuthorized) {
+			router.push('/');
+		}
+	}, [isAuthorized]);
 
 	const [credentials, setCredentials] = useState<Credentials>({
 		email: '',
 		password: '',
+		confirmPassword: '',
 	});
 	const [errors, setErrors] = useState({
 		email: '',
 		password: '',
+		confirmation: '',
 	});
 
 	const onChangeHandler = (e: any) => {
+		const { name, value }: { name: 'email' | 'password' | 'confirmPassword'; value: string } =
+			e.target;
 		console.log('creds: ', credentials);
-		const { name, value }: { name: 'email' | 'password'; value: string } = e.target;
+		if (name === 'confirmPassword') {
+			if (value !== credentials.password) {
+				setErrors((e) => ({ ...e, confirmation: 'Passwords do not match' }));
+			} else {
+				setErrors((e) => ({ ...e, confirmation: '' }));
+			}
+		}
 		if (name === 'email') {
 			if (!isValidEmail(value)) {
 				setErrors((e) => ({ ...e, email: 'Email is invalid' }));
@@ -55,6 +62,11 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 			}
 		}
 		if (name === 'password') {
+			if (value !== credentials.confirmPassword) {
+				setErrors((e) => ({ ...e, confirmation: 'Passwords do not match' }));
+			} else {
+				setErrors((e) => ({ ...e, confirmation: '' }));
+			}
 			if (value.length <= 5) {
 				setErrors((e) => ({ ...e, password: "Password's length must be at least 6 characters" }));
 			} else {
@@ -64,14 +76,14 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 		setCredentials((c) => ({ ...c, [e.target.name]: e.target.value }));
 	};
 
-	const signInHandler = (credentials: Credentials) => {
-		dispatch(authAsyncActions.login(credentials));
+	const signUpHandler = ({ email, password }: Credentials) => {
+		dispatch(authAsyncActions.register({ email, password }));
 	};
 
 	return (
 		<>
 			<Head>
-				<title>Telegrach | Login</title>
+				<title>Telegrach | Register</title>
 			</Head>
 			<section className='h-screen w-screen bg-blue-500 flex align-middle'>
 				<div className='m-auto md:w-96 w-80 shadow-md bg-white h-auto rounded-xl px-5 py-10 flex flex-col align-middle justify-center'>
@@ -96,34 +108,31 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 						variant='outlined'
 					/>
 					<div className='mb-4' />
+					<TextField
+						className='w-full'
+						value={credentials.confirmPassword}
+						onChange={onChangeHandler}
+						label='Confirm password'
+						name='confirmPassword'
+						variant='outlined'
+					/>
+					<div className='mb-4' />
 					<Tip showError={!!errors.email} text={errors.email} />
 					<Tip showError={!!errors.password} text={errors.password} />
+					<Tip showError={!!errors.confirmation} text={errors.confirmation} />
 					<Button
 						className='flex justify-center w-full'
 						variant='text'
-						onClick={() => signInHandler(credentials)}
+						onClick={() => signUpHandler(credentials)}
 					>
 						<FiLogIn style={{ fontSize: '28px', marginRight: '10px' }} />
-						<span>Sign in</span>
-					</Button>
-					<div className='mb-4' />
-					<Chip label='OR' className='mb-4' />
-					<Button
-						className='flex justify-start w-full'
-						variant='outlined'
-						onClick={() => window.open(`${environment.api}/auth/google/login`, '_blank')}
-					>
-						<FcGoogle className='text-3xl mr-5' /> <span>Sign in with Google</span>
-					</Button>
-					<div className='mb-4' />
-					<Button className='flex justify-start w-full' variant='outlined'>
-						<FaDiscord className='text-3xl mr-5' /> <span>Sign in with Discord</span>
+						<span>Sign up</span>
 					</Button>
 					<div
 						className='mt-4 cursor-pointer hover:text-gray-500'
-						onClick={() => router.push('/register')}
+						onClick={() => router.push('/login')}
 					>
-						Not registered yet? Click here
+						Already have an account? Click here
 					</div>
 				</div>
 			</section>

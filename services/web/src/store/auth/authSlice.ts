@@ -1,6 +1,6 @@
 import { IUser } from '../../interfaces/user';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { authActions } from './authActionCreators';
+import { authAsyncActions } from './authActionCreators';
 
 interface AuthState {
 	user: IUser | null;
@@ -24,15 +24,49 @@ export const authSlice = createSlice({
 		},
 	},
 	extraReducers: {
-		[authActions.getMe.fulfilled.type]: (state, { payload }: PayloadAction<IUser>) => {
+		// GET ME
+		[authAsyncActions.getMe.fulfilled.type]: (state, { payload }: PayloadAction<IUser>) => {
 			state.user = payload;
 			state.isAuthorized = true;
 			state.isLoading = false;
+			state.error = '';
 		},
-		[authActions.getMe.pending.type]: (state) => {
+		[authAsyncActions.getMe.pending.type]: (state) => {
 			state.isLoading = true;
 		},
-		[authActions.getMe.rejected.type]: (state, { payload }: PayloadAction<string>) => {
+		[authAsyncActions.getMe.rejected.type]: (state, { payload }: PayloadAction<string>) => {
+			state.error = payload;
+			state.isLoading = false;
+			state.isAuthorized = false;
+		},
+		// REGISTER
+		[authAsyncActions.register.fulfilled.type]: (state, { payload }: PayloadAction<IUser>) => {
+			state.user = payload;
+			state.isAuthorized = true;
+			state.isLoading = false;
+			state.error = '';
+		},
+		[authAsyncActions.register.pending.type]: (state) => {
+			state.isLoading = true;
+			state.error = '';
+		},
+		[authAsyncActions.register.rejected.type]: (state, { payload }: PayloadAction<string>) => {
+			state.error = payload;
+			state.isLoading = false;
+			state.isAuthorized = false;
+		},
+		// LOGIN
+		[authAsyncActions.login.fulfilled.type]: (state, { payload }: PayloadAction<IUser>) => {
+			state.user = payload;
+			state.isAuthorized = true;
+			state.isLoading = false;
+			state.error = '';
+		},
+		[authAsyncActions.login.pending.type]: (state) => {
+			state.isLoading = true;
+			state.error = '';
+		},
+		[authAsyncActions.login.rejected.type]: (state, { payload }: PayloadAction<string>) => {
 			state.error = payload;
 			state.isLoading = false;
 			state.isAuthorized = false;

@@ -33,7 +33,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Get me, if logged in' })
   @ApiOkResponse({ type: User, description: 'User' })
   @Get('me')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   status(@Req() req: Request) {
     this.logger.log(`REQUEST USER: ${JSON.stringify(req.user, null, 2)}`);
     // this.logger.log('REQUEST SESSION:', req.session);
