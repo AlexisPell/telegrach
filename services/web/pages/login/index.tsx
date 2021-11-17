@@ -28,12 +28,13 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const isAuthorized = useAppSelector((state) => state.authReducer.isAuthorized);
+	const error = useAppSelector((state) => state.authReducer.error);
 
-	// useEffect(() => {
-	// 	if (isAuthorized) {
-	// 		router.push('/');
-	// 	}
-	// }, [isAuthorized]);
+	useEffect(() => {
+		if (isAuthorized) {
+			router.push('/');
+		}
+	}, [isAuthorized]);
 
 	const [credentials, setCredentials] = useState<Credentials>({
 		email: '',
@@ -66,6 +67,10 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 
 	const signInHandler = (credentials: Credentials) => {
 		dispatch(authAsyncActions.login(credentials));
+		dispatch(authAsyncActions.getMe());
+		if (!error) {
+			router.push('/');
+		}
 	};
 
 	return (
@@ -98,6 +103,7 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 					<div className='mb-4' />
 					<Tip showError={!!errors.email} text={errors.email} />
 					<Tip showError={!!errors.password} text={errors.password} />
+					<Tip showError={!!error} text={error} />
 					<Button
 						className='flex justify-center w-full'
 						variant='text'
@@ -116,7 +122,11 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 						<FcGoogle className='text-3xl mr-5' /> <span>Sign in with Google</span>
 					</Button>
 					<div className='mb-4' />
-					<Button className='flex justify-start w-full' variant='outlined'>
+					<Button
+						className='flex justify-start w-full'
+						variant='outlined'
+						onClick={() => window.open(`${environment.api}/auth/discord/login`, '_blank')}
+					>
 						<FaDiscord className='text-3xl mr-5' /> <span>Sign in with Discord</span>
 					</Button>
 					<div

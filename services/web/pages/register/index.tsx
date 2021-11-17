@@ -25,6 +25,7 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 	const isAuthorized = useAppSelector((state) => state.authReducer.isAuthorized);
+	const error = useAppSelector((state) => state.authReducer.error);
 
 	useEffect(() => {
 		if (isAuthorized) {
@@ -78,6 +79,10 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 
 	const signUpHandler = ({ email, password }: Credentials) => {
 		dispatch(authAsyncActions.register({ email, password }));
+		dispatch(authAsyncActions.getMe());
+		if (!error) {
+			router.push('/');
+		}
 	};
 
 	return (
@@ -120,6 +125,7 @@ const LoginPage: NextPage<LoginPageProps> = ({}) => {
 					<Tip showError={!!errors.email} text={errors.email} />
 					<Tip showError={!!errors.password} text={errors.password} />
 					<Tip showError={!!errors.confirmation} text={errors.confirmation} />
+					<Tip showError={!!error} text={error} />
 					<Button
 						className='flex justify-center w-full'
 						variant='text'

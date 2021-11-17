@@ -1,4 +1,3 @@
-import { apiPrefix } from './../../common/constants/paths';
 import { DiscordAuthGuard } from '../guards/discord.guard';
 import { Controller, Get, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -11,9 +10,10 @@ export class DiscordAuthController {
   loginDiscord() {
     return;
   }
+
   @Get('/discord/redirect')
   @UseGuards(DiscordAuthGuard)
   redirect(@Res() res: any) {
-    res.redirect(`${apiPrefix}/auth/me`);
+    res.redirect(`${process.env.WEB_PROXY_API_URL}`);
   }
 }

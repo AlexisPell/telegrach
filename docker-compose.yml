@@ -19,16 +19,17 @@ services:
       - 27017:27017
     networks:
       - webnet
-
-  # # NGINX FOR WEB
-  # webServer:
-    # build: ./services/web/nginx
-    # container_name: webServer
-    # hostname: webServer
-    # ports:
-    #   - 80:80
-    # networks:
-    #   - webnet
+  # PROXY SERVER
+  proxy:
+    build: ./nginx
+    container_name: proxy
+    hostname: proxy
+    ports:
+      - 80:80
+      - 8080:8080
+    networks:
+      - webnet
+    restart: always
   # WEB
   web:
     container_name: web
@@ -43,17 +44,6 @@ services:
       - ./services/web:/app
       - /app/node_modules
       - /app/.next
-
-  # PROXY SERVER
-  proxy:
-    build: ./nginx
-    container_name: proxy
-    hostname: proxy
-    ports:
-      - 80:80
-      - 8080:8080
-    networks:
-      - webnet
 
   # USERS-API
   users-api:
@@ -94,24 +84,3 @@ services:
 
 networks:
   webnet:
-
-
-
-  # # PROXY
-  # proxy-server:
-  #   env_file:
-  #     - .env.development
-  #   container_name: proxy-server
-  #   hostname: proxy-server
-  #   build: ./services/proxy-server
-  #   ports:
-  #     - '8080:8080'
-  #   networks:
-  #     - webnet
-  #   depends_on:
-  #     - chats-api
-  #     - users-api
-  #   restart: always
-  #   volumes:
-  #     - ./services/proxy-server:/app
-  #     - /app/node_modules

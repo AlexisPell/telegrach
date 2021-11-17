@@ -88,7 +88,7 @@ export class UsersService {
 
     const userPayload: Partial<User> = {
       email: googlePayload._json.email,
-      locallyVerified: googlePayload._json.email_verified,
+      locallyVerified: !!googlePayload._json.email_verified,
       googleId: googlePayload.id,
     };
     const user = await this.userModel.create(userPayload);

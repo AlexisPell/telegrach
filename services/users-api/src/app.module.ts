@@ -7,7 +7,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { WSAppGateway } from './wsapp.gateway';
 import { VoiceMessageModule } from './voice-messages/vm.module';
 import { FilesModule } from './files/files.module';
 import { srcPath } from './common/constants/paths';
@@ -35,6 +34,5 @@ import { ProfilesModule } from './profiles/profiles.module';
     VoiceMessageModule,
     ProfilesModule,
   ],
-  providers: [WSAppGateway],
 })
 export class AppModule {}

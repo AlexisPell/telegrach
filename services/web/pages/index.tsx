@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '../src/hooks/useRedux';
 import router from 'next/router';
 import { authAsyncActions } from '../src/store/auth/authActionCreators';
+import { Navbar } from '../src/components/navbar';
 
 const Home: NextPage = () => {
 	// const { data: session, status } = useSession();
@@ -12,14 +13,11 @@ const Home: NextPage = () => {
 	const authState = useAppSelector((state) => state.authReducer);
 
 	useEffect(() => {
-		// if (!authState.isAuthorized) {
-		// 	router.push('/login');
-		// }
-		dispatch(authAsyncActions.getMe());
+		if (!authState.isAuthorized) {
+			router.push('/login');
+		}
+		// dispatch(authAsyncActions.getMe());
 	}, []);
-
-	// if (status === 'loading')
-	// 	return <div className='text-xl text-center text-pink-600'>Loading...</div>;
 
 	return (
 		<div className='bg-red-400 w-screen h-screen'>
@@ -29,8 +27,7 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className=''>
-				<h1>Hello boys!!</h1>
-				<br />
+				<Navbar />
 				<div className='h-20 w-full bg-blue-400'>
 					<Link href='/penises'>To penises!</Link>
 				</div>
