@@ -13,10 +13,10 @@ const Home: NextPage = () => {
 	const authState = useAppSelector((state) => state.authReducer);
 
 	useEffect(() => {
-		if (!authState.isAuthorized) {
-			router.push('/login');
-		}
-		// dispatch(authAsyncActions.getMe());
+		// if (!authState.isAuthorized) {
+		// 	router.push('/login');
+		// }
+		dispatch(authAsyncActions.getMe());
 	}, []);
 
 	return (
